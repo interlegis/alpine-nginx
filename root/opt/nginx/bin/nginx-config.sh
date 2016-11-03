@@ -6,7 +6,8 @@ NGINX_MAIL_PROTOCOLS=${NGINX_MAIL_PROTOCOLS:-"smtp-587 imap-143 pop3-110"}
 NGINX_MAIL_AUTH_HTTP=${NGINX_MAIL_AUTH_HTTP:-"localhost"}
 NGINX_MAIL_SSL_ENABLE=${NGINX_MAIL_SSL_ENABLE:-"false"}
 NGINX_SSL_PATH=${NGINX_SSL_PATH:-"${SERVICE_HOME}/certs"}
-
+NGINX_PHP_FPM_HOST=${NGINX_PHP_FPM_HOST:-""}
+NGINX_PHP_FPM_PORT=${NGINX_PHP_FPM_PORT:-"9000"}
 
 cat << EOF > ${SERVICE_HOME}/conf/nginx.conf
 user  ${SERVICE_USER};
@@ -99,6 +100,42 @@ EOF
   done
 fi
 
+if [ "${NGINX_PHP_FPM_HOST}" != "" ]; then
+  cat << EOF > ${SERVICE_HOME}/sites/default-php-fpm.conf
+upstream backend {
+  server ${NGINX_PHP_FPM_HOST}:${NGINX_PHP_FPM_PORT};
+}
+
+server {
+  listen 8080 default_server;
+
+  server_name localhost;
+
+  access_log /dev/stdout;
+  error_log /dev/stderr;
+
+  root /var/www/html;
+  index index.php;
+
+  location ~ /\.ht {
+    deny  all;
+  }
+
+  location ~* ^.+.(css|js|jpeg|jpg|gif|png|ico) {
+    expires 30d;
+  }
+
+  location ~ \.php$ {
+      fastcgi_pass    backend;
+      fastcgi_index   index.php;
+      fastcgi_param   SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+      include         fastcgi_params;
+  }
+}
+
+EOF
+fi
+ 
 if [ ! -f ${SERVICE_HOME}/sites/*.conf ]; then
 
     cat << EOF > ${SERVICE_HOME}/sites/example.conf

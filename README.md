@@ -1,7 +1,7 @@
 alpine-nginx
 =============
 
-This image is the nginx base. It comes from [alpine-monit][alpine-monit].
+This image is based on rawmind/alpine-nginx. It comes from [alpine-monit][alpine-monit].
 
 ## Build
 
@@ -11,7 +11,7 @@ docker build -t interlegis/alpine-nginx:<version> .
 
 ## Versions
 
-- `1.10.2-2` [(Dockerfile)](https://github.com/interlegis/alpine-nginx/blob/1.10.2-2/Dockerfile)
+- `1.10.2-3` [(Dockerfile)](https://github.com/interlegis/alpine-nginx/blob/1.10.2-3/Dockerfile)
 
 
 ## Configuration
@@ -24,7 +24,18 @@ Besides, you can customize the configuration in several ways:
 
 nginx is installed with the default configuration listening at 8080 and 8443 ports. 
 
-In addition, it is possible to config Mail Proxying with the folloging environment variables:
+The following common scenarios are also supported: 
+
+#### Nginx in front of PHP-FPM
+
+Alpine-nginx includes a default configuration to use with PHP-FPM:
+
+ - NGINX_PHP_FPM_HOST: hostname of the PHP-FPM server. Defaults to empty (disabled).
+ - NGINX_PHP_FPM_PORT: port which PHP-FPM server listes to. Defaults to 9000.
+
+#### Nginx as a Mail Proxy
+
+It is possible to config Mail Proxying with the folloging environment variables:
 
  - NGINX_MAIL_ENABLE: defaults to "false", "true" enables mail proxying.
  - NGINX_MAIL_PROTOCOLS: defaults to "smtp-587 imap-143 pop3-110". It's a list separated by spaces with protocol configuration separated by hyphens, as following:
@@ -40,7 +51,7 @@ In addition, it is possible to config Mail Proxying with the folloging environme
 
 Nginx is installed under /opt/nginx and make use of /opt/nginx/conf/nginx.conf and /opt/nginx/sites/*.conf.
 
-You could also include `FROM rawmind/alpine-nginx` at the top of your `Dockerfile`, and add your site files to /opt/nginx/www and your nginx config to /opt/nginx/sites
+You could also include `FROM interlegis/alpine-nginx` at the top of your `Dockerfile`, and add your site files to /opt/nginx/www and your nginx config to /opt/nginx/sites
 
 
 

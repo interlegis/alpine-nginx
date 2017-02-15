@@ -53,13 +53,17 @@ EOF
   MAILPORTSCFG=(${NGINX_MAIL_PROTOCOLS// / })
 
   if [ "X${NGINX_MAIL_SSL_ENABLE}" == "Xtrue" ]; then
-    filelist=`ls -1 ${NGINX_SSL_PATH}/*.key | cut -d"." -f1`
+    keyfiles=`ls -1 ${NGINX_SSL_PATH}/*.key`
     RC=`echo $?`
-
+    keyfile=${keyfiles[0]}
+    certfiles=`ls -1 ${NGINX_SSL_PATH}/*.crt ${NGINX_SSL_PATH}/*.pem 2>/dev/null`
+    certfile=${certfiles[0]} 
+    
     if [ $RC -eq 0 ]; then
+      touch ${SERVICE_HOME}/mailhosts/ssl.conf
       cat << EOF >> ${SERVICE_HOME}/mailhosts/ssl.conf
-  ssl_certificate ${filelist[0]}.crt;
-  ssl_certificate_key ${filelist[0]}.key;
+  ssl_certificate ${certfile};
+  ssl_certificate_key ${keyfile};
   ssl_session_timeout 5m;
   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
   ssl_ciphers EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH;

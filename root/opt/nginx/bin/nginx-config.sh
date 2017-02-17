@@ -90,6 +90,11 @@ EOF
       fi
     fi
 
+    xclient=""
+    if [ "$protocol" == "smtp" ]; then
+      xclient="xclient off;" 
+    fi
+
     portpadded=$(printf "%04d" $port)
     porthigh="2${portpadded}"
     cat << EOF > ${SERVICE_HOME}/mailhosts/${portcfg}.conf
@@ -99,6 +104,7 @@ server {
     protocol ${protocol};
     auth_http ${NGINX_MAIL_AUTH_HTTP};
     ${sslconf}
+    ${xclient}
 }
 EOF
   done

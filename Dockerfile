@@ -2,7 +2,7 @@ FROM rawmind/alpine-monit:0.5.19-2
 MAINTAINER Raul Sanchez <rawmind@gmail.com>
 
 #Set environment
-ENV SERVICE_VERSION=1.10.2 \
+ENV SERVICE_VERSION=1.10.3 \
     SERVICE_NAME=nginx \
     SERVICE_HOME=/opt/nginx \
     SERVICE_USER=nginx \

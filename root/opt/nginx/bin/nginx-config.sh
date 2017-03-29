@@ -5,6 +5,7 @@ NGINX_MAIL_ENABLE=${NGINX_MAIL_ENABLE:-"false"}
 NGINX_MAIL_PROTOCOLS=${NGINX_MAIL_PROTOCOLS:-"smtp-587 imap-143 pop3-110"}
 NGINX_MAIL_AUTH_HTTP=${NGINX_MAIL_AUTH_HTTP:-"localhost"}
 NGINX_MAIL_SSL_ENABLE=${NGINX_MAIL_SSL_ENABLE:-"false"}
+NGINX_MAIL_SMTP_XCLIENT=${NGINX_MAIL_SMTP_XCLIENT:-"false"}
 NGINX_SSL_PATH=${NGINX_SSL_PATH:-"${SERVICE_HOME}/certs"}
 NGINX_PHP_FPM_HOST=${NGINX_PHP_FPM_HOST:-""}
 NGINX_PHP_FPM_PORT=${NGINX_PHP_FPM_PORT:-"9000"}
@@ -92,7 +93,11 @@ EOF
 
     xclient=""
     if [ "$protocol" == "smtp" ]; then
-      xclient="xclient off;" 
+      if [ "X${NGINX_MAIL_SMTP_XCLIENT}" == "Xtrue" ]; then
+        xclient="xclient on;"
+      else 
+        xclient="xclient off;"
+      fi 
     fi
 
     portpadded=$(printf "%04d" $port)

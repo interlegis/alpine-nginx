@@ -11,7 +11,8 @@ docker build -t interlegis/alpine-nginx:<version> .
 
 ## Versions
 
-- `1.10.2-3` [(Dockerfile)](https://github.com/interlegis/alpine-nginx/blob/1.10.2-3/Dockerfile)
+- `1.10.3-1` [(Dockerfile)](https://github.com/interlegis/alpine-nginx/blob/1.10.3-1/Dockerfile)
+- `1.10.2-6` [(Dockerfile)](https://github.com/interlegis/alpine-nginx/blob/1.10.2-6/Dockerfile)
 
 
 ## Configuration
@@ -45,7 +46,8 @@ It is possible to config Mail Proxying with the folloging environment variables:
  - NGINX_MAIL_AUTH_HTTP: mail authentication script HTTP URL. Defaults to "localhost". 
  - NGINX_MAIL_SSL_ENABLE: whether to enable SSL encryption for mail proxying. Defaults to "false".
  - NGINX_SSL_PATH: folder where nginx searches for certificates. Defaults to "/opt/nginx/certs".
-
+ - NGINX_MAIL_SMTP_XCLIENT: Enable XCLIENT for SMTP protocol. Defaults to "false".
+ - NGINX_MAIL_PROXY_ERRMSG: Enables proxy_pass_error_message for mail protocols. Defaults to "false".
 
 ### Custom Configuration
 

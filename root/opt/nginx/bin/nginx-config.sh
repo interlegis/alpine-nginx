@@ -6,6 +6,7 @@ NGINX_MAIL_PROTOCOLS=${NGINX_MAIL_PROTOCOLS:-"smtp-587 imap-143 pop3-110"}
 NGINX_MAIL_AUTH_HTTP=${NGINX_MAIL_AUTH_HTTP:-"localhost"}
 NGINX_MAIL_SSL_ENABLE=${NGINX_MAIL_SSL_ENABLE:-"false"}
 NGINX_MAIL_SMTP_XCLIENT=${NGINX_MAIL_SMTP_XCLIENT:-"false"}
+NGINX_MAIL_PROXY_ERRMSG=${NGINX_MAIL_PROXY_ERRMSG:-"false"}
 NGINX_SSL_PATH=${NGINX_SSL_PATH:-"${SERVICE_HOME}/certs"}
 NGINX_PHP_FPM_HOST=${NGINX_PHP_FPM_HOST:-""}
 NGINX_PHP_FPM_PORT=${NGINX_PHP_FPM_PORT:-"9000"}
@@ -100,6 +101,11 @@ EOF
       fi 
     fi
 
+    proxy_errmsg=""
+    if [ "X${NGINX_MAIL_PROXY_ERRMSG}" == "Xtrue" ]; then
+      proxy_errmsg="proxy_pass_error_message on;"
+    fi
+
     portpadded=$(printf "%04d" $port)
     porthigh="2${portpadded}"
     cat << EOF > ${SERVICE_HOME}/mailhosts/${portcfg}.conf
@@ -110,6 +116,7 @@ server {
     auth_http ${NGINX_MAIL_AUTH_HTTP};
     ${sslconf}
     ${xclient}
+    ${proxy_errmsg}
 }
 EOF
   done

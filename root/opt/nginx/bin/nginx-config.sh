@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-SERVICE_USER=${SERVICE_USER:-"root"}
 NGINX_MAIL_ENABLE=${NGINX_MAIL_ENABLE:-"false"}
 NGINX_MAIL_PROTOCOLS=${NGINX_MAIL_PROTOCOLS:-"smtp-587 imap-143 pop3-110"}
 NGINX_MAIL_AUTH_HTTP=${NGINX_MAIL_AUTH_HTTP:-"localhost"}
@@ -12,7 +11,6 @@ NGINX_PHP_FPM_HOST=${NGINX_PHP_FPM_HOST:-""}
 NGINX_PHP_FPM_PORT=${NGINX_PHP_FPM_PORT:-"9000"}
 
 cat << EOF > ${SERVICE_HOME}/conf/nginx.conf
-user  ${SERVICE_USER};
 worker_processes  2;
 
 error_log  ${SERVICE_HOME}/log/error.log warn;

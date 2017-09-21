@@ -10,7 +10,7 @@ ENV SERVICE_VERSION=1.12.1 \
 ENV PATH=${PATH}:${SERVICE_HOME}/bin 
 
 # Compile and install nginx
-RUN apk add --update gcc musl-dev make openssl-dev pcre pcre-dev zlib-dev\
+RUN apk add --update openssl gcc musl-dev make openssl-dev pcre pcre-dev zlib-dev\
   && mkdir -p /opt/src ${SERVICE_HOME}/www ${SERVICE_HOME}/sites ${SERVICE_HOME}/mailhosts ${SERVICE_HOME}/certs \
   && cd /opt/src \
   && curl -sS ${SERVICE_URL}/nginx-${SERVICE_VERSION}.tar.gz | gunzip -c - | tar -xf - \

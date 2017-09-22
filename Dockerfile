@@ -1,4 +1,4 @@
-FROM rawmind/alpine-monit:5.23
+FROM rawmind/alpine-monit:0.5.20-2
 MAINTAINER Fabio Rauber <fabiorauber@gmail.com>
 
 #Set environment

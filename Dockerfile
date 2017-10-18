@@ -1,4 +1,4 @@
-FROM rawmind/alpine-monit:0.5.20-2
+FROM rawmind/alpine-monit:5.24-0
 MAINTAINER Fabio Rauber <fabiorauber@gmail.com>
 
 #Set environment
@@ -10,7 +10,7 @@ ENV SERVICE_VERSION=1.12.1 \
 ENV PATH=${PATH}:${SERVICE_HOME}/bin 
 
 # Compile and install nginx
-RUN apk add --update openssl gcc musl-dev make openssl-dev pcre pcre-dev zlib-dev\
+RUN apk add --update gcc musl-dev make libressl-dev pcre pcre-dev zlib-dev\
   && mkdir -p /opt/src ${SERVICE_HOME}/www ${SERVICE_HOME}/sites ${SERVICE_HOME}/mailhosts ${SERVICE_HOME}/certs \
   && cd /opt/src \
   && curl -sS ${SERVICE_URL}/nginx-${SERVICE_VERSION}.tar.gz | gunzip -c - | tar -xf - \
@@ -29,7 +29,7 @@ RUN apk add --update openssl gcc musl-dev make openssl-dev pcre pcre-dev zlib-de
         --lock-path=${SERVICE_HOME}/run/nginx.lock  \
   && make -j2 \
   && make install \
-  && apk del gcc musl-dev make openssl-dev pcre-dev zlib-dev \
+  && apk del gcc musl-dev make libressl-dev pcre-dev zlib-dev \
   && rm -rf /opt/src /var/cache/apk/* ${SERVICE_HOME}/conf/nginx.conf 
 
 # Add config files
